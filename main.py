@@ -1,11 +1,18 @@
-import requests
-import matplotlib.pyplot as plt
-from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-import matplotlib.pylab as pylab
 import os
-from models.models import Game, Team
-from typing import List
 from datetime import datetime
+from tempfile import NamedTemporaryFile
+from typing import List
+
+import matplotlib as mpl
+import matplotlib.font_manager as fm
+import matplotlib.pylab as pylab
+import matplotlib.pyplot as plt
+import numpy as np
+import requests
+import urllib3
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+
+from models.models import Game, Team
 
 params = {'legend.fontsize': 'x-large',
          'axes.labelsize': 'x-large',
@@ -16,6 +23,15 @@ params = {'legend.fontsize': 'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
 
+
+if not os.path.exists("Goldman-Regular.ttf"):
+    font_github_url = "https://github.com/google/fonts/blob/main/ofl/goldman/Goldman-Regular.ttf?raw=true"
+
+    a = requests.get(font_github_url, verify=True)
+    with open("Goldman-Regular.ttf", "wb") as f:
+        f.write(a.content)
+
+font_file_path = "Goldman-Regular.ttf"
 
 URL_TEAMS = "https://www.nationalleague.ch/api/teams?lang=fr-CH"
 URL_GAMES = "https://www.nationalleague.ch/api/games?lang=fr-CH"
@@ -50,7 +66,9 @@ teams : List[Team] = [Team(**x) for x in teams_json]
 teams_short = [team.shortName for team in teams]
 finished = [game for game in games if game.status == "finished" and game.isExhibition == False] # only keep finished games from the regular season
 
-for team in teams_short:
+colors = mpl.colormaps['tab20b'].colors
+
+for i, team in enumerate(teams_short):
     completed_games = [game for game in finished if game.homeTeamShortName == team or game.awayTeamShortName == team] # filter the games for a given team
 
     streak = [0]
@@ -93,14 +111,19 @@ for team in teams_short:
         frameon=False
     )
 
-    ax.plot(streak, lw=3, label=team)
+    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=3)
     ax.add_artist(ab)
 
-ax.set_ylabel("Wins")
-ax.set_xlabel("Games")
+prop = fm.FontProperties(fname=font_file_path)
+ax.text(1, 16.5, "NATIONAL LEAGUE 2025-26", fontsize=36, fontweight='bold', fontproperties=prop)
+
+ax.set_ylabel("Wins", fontsize=20, fontproperties=prop)
+ax.set_xlabel("Games", fontsize=20, fontproperties=prop)
 ax.set_xlim(left=0)
-ax.legend(loc='upper left')
+ax.legend(loc='lower left')
 ax.set_facecolor("#EEEEEE")
-plt.title("National League")
-plt.grid()
+ax.yaxis.set_major_locator(plt.MultipleLocator(2))
+ax.xaxis.set_major_locator(plt.MultipleLocator(2))
+plt.grid(zorder=2)
 plt.savefig(os.path.join("OUT", f"standings-{datetime.today().strftime('%Y-%m-%d')}.png"))
+plt.show()
