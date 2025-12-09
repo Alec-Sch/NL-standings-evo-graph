@@ -5,6 +5,7 @@ import matplotlib.pylab as pylab
 import os
 from models.models import Game, Team
 from typing import List
+from datetime import datetime
 
 params = {'legend.fontsize': 'x-large',
          'axes.labelsize': 'x-large',
@@ -37,7 +38,7 @@ COLOR = {
 }
 
 
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(2560/96, 1335/96)) # 2K resolution with a dpi of 96
 
 teams_json = requests.get(URL_TEAMS).json()
 games_json = requests.get(URL_GAMES).json()
@@ -100,4 +101,4 @@ ax.legend(loc='upper left')
 ax.set_facecolor("#EEEEEE")
 plt.title("National League")
 plt.grid()
-plt.show()
+plt.savefig(os.path.join("OUT", f"standings-{datetime.today().strftime('%Y-%m-%d')}.png"))
