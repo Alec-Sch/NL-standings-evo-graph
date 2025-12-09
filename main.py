@@ -20,6 +20,8 @@ pylab.rcParams.update(params)
 URL_TEAMS = "https://www.nationalleague.ch/api/teams?lang=fr-CH"
 URL_GAMES = "https://www.nationalleague.ch/api/games?lang=fr-CH"
 
+# Tested those colors for the lines in the plot, but the reds and blue are too close to each other
+# Edit those colors at will, find where the streak is plotted (ax.plot(...)) and add the argument : c=COLOR[team] where team is the team's shortName
 COLOR = {
     "GSHC": "#6E0B14",
     "HCD": "#FFDD00",
