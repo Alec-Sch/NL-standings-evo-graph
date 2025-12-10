@@ -1,15 +1,12 @@
 import os
 from datetime import datetime
-from tempfile import NamedTemporaryFile
 from typing import List
 
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 import matplotlib.pylab as pylab
 import matplotlib.pyplot as plt
-import numpy as np
 import requests
-import urllib3
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 
 from models.models import Game, Team
@@ -32,6 +29,9 @@ if not os.path.exists("Goldman-Regular.ttf"):
         f.write(a.content)
 
 font_file_path = "Goldman-Regular.ttf"
+
+if not os.path.exists("OUT"):
+    os.mkdir("OUT")
 
 URL_TEAMS = "https://www.nationalleague.ch/api/teams?lang=fr-CH"
 URL_GAMES = "https://www.nationalleague.ch/api/games?lang=fr-CH"
@@ -125,4 +125,3 @@ ax.yaxis.set_major_locator(plt.MultipleLocator(2))
 ax.xaxis.set_major_locator(plt.MultipleLocator(2))
 plt.grid(zorder=2)
 plt.savefig(os.path.join("OUT", f"standings-{datetime.today().strftime('%Y-%m-%d')}.png"))
-plt.show()
