@@ -9,6 +9,7 @@ class Game(object):
     status: str
     isOvertime: bool
     isExhibition: bool
+    date: str
 
     # This is to accept keyword args that aren't a defined field in the dataclass
     # a.k.a fields that aren't useful in the code

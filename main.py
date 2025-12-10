@@ -68,6 +68,10 @@ finished = [game for game in games if game.status == "finished" and game.isExhib
 
 colors = mpl.colormaps['tab20b'].colors
 
+first_game_date = finished[0].date # take the first game to determine the year of the season
+year = datetime.fromisoformat(first_game_date).year
+year_str =f"{year}-{year%100+1}" # This code 
+
 for i, team in enumerate(teams_short):
     completed_games = [game for game in finished if game.homeTeamShortName == team or game.awayTeamShortName == team] # filter the games for a given team
 
@@ -114,7 +118,7 @@ for i, team in enumerate(teams_short):
     ax.add_artist(ab)
 
 prop = fm.FontProperties(fname=font_file_path)
-ax.text(1, 16.5, "NATIONAL LEAGUE 2025-26", fontsize=36, fontweight='bold', fontproperties=prop)
+ax.text(1, 16.5, f"NATIONAL LEAGUE {year_str}", fontsize=36, fontweight='bold', fontproperties=prop)
 
 ax.set_ylabel("Wins", fontsize=20, fontproperties=prop)
 ax.set_xlabel("Games", fontsize=20, fontproperties=prop)
