@@ -77,7 +77,6 @@ for i, team in enumerate(teams_short):
     for game in completed_games:
         # For each game, we can easily find who between the home team and away team won
         # But we also need to determine if the team we're focusing on was at home or away
-
         is_away = game.awayTeamShortName == team
 
         team_score = game.awayTeamResult if is_away else game.homeTeamResult
@@ -85,16 +84,16 @@ for i, team in enumerate(teams_short):
 
         if team_score > opp_score:
             if game.isOvertime == False:
-                cum_streak += 1    
+                cum_streak += 1
             else:
-                cum_streak += 0.5
+                cum_streak += 1/3
         else:
-            if game.isOvertime == False:
-                cum_streak -= 1    
+            if game.isOvertime == True:
+                cum_streak -= 1/3
             else:
-                cum_streak -= 0.5
+                cum_streak -= 1
         streak.append(cum_streak)
-    
+
     logo_path = os.path.join("assets", f"{team}.png")
     logo_img = plt.imread(logo_path)
 
