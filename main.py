@@ -72,6 +72,8 @@ first_game_date = finished[0].date # take the first game to determine the year o
 year = datetime.fromisoformat(first_game_date).year
 year_str =f"{year}-{year%100+1}" # This code 
 
+pts_final = []
+
 for i, team in enumerate(teams_short):
     completed_games = [game for game in finished if game.homeTeamShortName == team or game.awayTeamShortName == team] # filter the games for a given team
 
@@ -105,22 +107,31 @@ for i, team in enumerate(teams_short):
     imagebox.image.axes = ax
     img_x, img_y = len(streak)-1, streak[-1] # coordinates where to place the image
 
+    # In case of two teams being superposed, need to move to the right the next logos
+    # we save the cumulative streak to compare for equality
+    # we need to save the cumulative streak per game played
+    truncated_cum_streak = float("%.2f" % cum_streak)
+    truncated_per_game = truncated_cum_streak / len(completed_games)
+    app = pts_final.count(truncated_per_game)
+    pts_final.append(truncated_per_game)
+
+
     ab = AnnotationBbox(
         imagebox,
         (img_x, img_y),
-        xybox=(10, 0), # shift by 10px to the right
+        xybox=(10+50*app, 0), # shift by 10px to the right and 50px to the right in case of multiple logos superposed
         xycoords='data',
         boxcoords="offset points",
         frameon=False
     )
 
-    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=3)
+    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=2)
     ax.add_artist(ab)
 
 prop = fm.FontProperties(fname=font_file_path)
 ax.text(1, 16.5, f"NATIONAL LEAGUE {year_str}", fontsize=36, fontweight='bold', fontproperties=prop)
 
-ax.set_ylabel("Wins", fontsize=20, fontproperties=prop)
+ax.set_ylabel("Win ratio", fontsize=20, fontproperties=prop)
 ax.set_xlabel("Games", fontsize=20, fontproperties=prop)
 ax.set_xlim(left=0)
 ax.legend(loc='lower left')
