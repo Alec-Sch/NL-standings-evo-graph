@@ -55,6 +55,22 @@ COLOR = {
     "ZSC": "#0092cc"
 }
 
+LINESTYLE = {
+    "GSHC": "dashed",
+    "HCD": "dotted",
+    "HCA": "dashed",
+    "HCAP": "dashdot",
+    "SCB": "dotted",
+    "EHCB": "dashed",
+    "FRI": "dashed",
+    "EHCK": "dotted",
+    "SCL": "dotted",
+    "LHC": "dashed",
+    "HCL": "dashdot",
+    "SCRJ": "dotted",
+    "EVZ": "dotted",
+    "ZSC": "dotted"
+}
 
 fig, ax = plt.subplots(figsize=(2560/96, 1335/96)) # 2K resolution with a dpi of 96
 
@@ -125,16 +141,20 @@ for i, team in enumerate(teams_short):
         frameon=False
     )
 
-    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=2)
+    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=2, linestyle=LINESTYLE[team])
     ax.add_artist(ab)
 
 prop = fm.FontProperties(fname=font_file_path)
 ax.text(1, 16.5, f"NATIONAL LEAGUE {year_str}", fontsize=36, fontweight='bold', fontproperties=prop)
 
-ax.set_ylabel("Win ratio", fontsize=20, fontproperties=prop)
-ax.set_xlabel("Games", fontsize=20, fontproperties=prop)
+ax.set_ylabel("Win ratio", fontsize=25, fontproperties=prop)
+ax.set_xlabel("Games", fontsize=25, fontproperties=prop)
 ax.set_xlim(left=0)
-ax.legend(loc='lower left')
+ax.legend(
+    ncol=2,
+    loc='lower left',
+    fontsize=20,
+)
 ax.set_facecolor("#EEEEEE")
 ax.yaxis.set_major_locator(plt.MultipleLocator(2))
 ax.xaxis.set_major_locator(plt.MultipleLocator(2))
