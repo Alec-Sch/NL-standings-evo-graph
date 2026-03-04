@@ -96,7 +96,11 @@ for i, team in enumerate(teams_short):
     streak = [0]
     cum_streak = 0 # cumulative of streak, it is what is inputed into the streak at each new game
 
-    for game in completed_games:
+    for game_number, game in enumerate(completed_games):
+        if game_number >= 52:
+            # ignore post season
+            break
+
         # For each game, we can easily find who between the home team and away team won
         # But we also need to determine if the team we're focusing on was at home or away
         is_away = game.awayTeamShortName == team
@@ -141,7 +145,7 @@ for i, team in enumerate(teams_short):
         frameon=False
     )
 
-    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=2, linestyle=LINESTYLE[team])
+    ax.plot(streak, lw=5, label=team, color=colors[i], zorder=2)
     ax.add_artist(ab)
 
 prop = fm.FontProperties(fname=font_file_path)
