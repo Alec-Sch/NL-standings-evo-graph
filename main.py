@@ -84,6 +84,10 @@ finished = [game for game in games if game.status == "finished" and game.isExhib
 
 colors = mpl.colormaps['tab20b'].colors
 
+if len(finished) == 0:
+    print("Season did not start yet")
+    exit()
+
 first_game_date = finished[0].date # take the first game to determine the year of the season
 year = datetime.fromisoformat(first_game_date).year
 year_str =f"{year}-{year%100+1}" # This code 
