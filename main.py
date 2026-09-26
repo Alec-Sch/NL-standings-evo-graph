@@ -57,6 +57,7 @@ year = datetime.fromisoformat(first_game_date).year
 year_str =f"{year}-{year%100+1}" # This code 
 
 pts_final = []
+max_height = 0
 
 for i, team in enumerate(teams_short):
     completed_games = [game for game in finished if game.homeTeamShortName == team or game.awayTeamShortName == team] # filter the games for a given team
@@ -96,6 +97,10 @@ for i, team in enumerate(teams_short):
 
     img_x, img_y = len(streak)-1, round(streak[-1], 2) # coordinates where to place the image
 
+    # store the height of the team with most points -- value used to plot the title
+    if img_y > max_height:
+        max_height = img_y 
+
     # In case of two teams being superposed, need to move to the right the next logos
     # We save the coordinates of each logo and compare how many are currently already drawn to
     # determine how many time to shift to the right
@@ -116,7 +121,7 @@ for i, team in enumerate(teams_short):
     ax.add_artist(ab)
 
 prop = fm.FontProperties(fname=font_file_path)
-ax.text(1, 16.5, f"NATIONAL LEAGUE {year_str}", fontsize=36, fontweight='bold', fontproperties=prop)
+ax.text(0.5, max_height-1, f"NATIONAL LEAGUE {year_str}", fontsize=36, fontweight='bold', fontproperties=prop)
 
 ax.set_ylabel("Win ratio", fontsize=25, fontproperties=prop)
 ax.set_xlabel("Games", fontsize=25, fontproperties=prop)
