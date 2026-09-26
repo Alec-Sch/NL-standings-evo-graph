@@ -80,7 +80,7 @@ games : List[Game] = [Game(**x) for x in games_json]
 teams : List[Team] = [Team(**x) for x in teams_json]
 
 teams_short = [team.shortName for team in teams]
-finished = [game for game in games if game.status == "finished" and game.isExhibition == False] # only keep finished games from the regular season
+finished = [game for game in games if (game.status == "finished" or game.status == "end") and game.isExhibition == False] # only keep finished games from the regular season
 
 colors = mpl.colormaps['tab20b'].colors
 
