@@ -97,8 +97,8 @@ pts_final = []
 for i, team in enumerate(teams_short):
     completed_games = [game for game in finished if game.homeTeamShortName == team or game.awayTeamShortName == team] # filter the games for a given team
 
-    streak = [0]
-    cum_streak = 0 # cumulative of streak, it is what is inputed into the streak at each new game
+    streak = [0.0]
+    cum_streak = 0.0 # cumulative of streak, it is what is inputed into the streak at each new game
 
     for game_number, game in enumerate(completed_games):
         if game_number >= 52:
@@ -129,16 +129,15 @@ for i, team in enumerate(teams_short):
 
     imagebox = OffsetImage(logo_img, zoom=0.3)
     imagebox.image.axes = ax
-    img_x, img_y = len(streak)-1, streak[-1] # coordinates where to place the image
+
+    img_x, img_y = len(streak)-1, round(streak[-1], 2) # coordinates where to place the image
 
     # In case of two teams being superposed, need to move to the right the next logos
-    # we save the cumulative streak to compare for equality
-    # we need to save the cumulative streak per game played
-    truncated_cum_streak = float("%.2f" % cum_streak)
-    truncated_per_game = truncated_cum_streak / len(completed_games)
-    app = pts_final.count(truncated_per_game)
-    pts_final.append(truncated_per_game)
-
+    # We save the coordinates of each logo and compare how many are currently already drawn to
+    # determine how many time to shift to the right
+    
+    app = pts_final.count((img_x, img_y))
+    pts_final.append((img_x, img_y))
 
     ab = AnnotationBbox(
         imagebox,
