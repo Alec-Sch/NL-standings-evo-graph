@@ -36,42 +36,6 @@ if not os.path.exists("OUT"):
 URL_TEAMS = "https://www.nationalleague.ch/api/teams?lang=fr-CH"
 URL_GAMES = "https://www.nationalleague.ch/api/games?lang=fr-CH"
 
-# Tested those colors for the lines in the plot, but the reds and blue are too close to each other
-# Edit those colors at will, find where the streak is plotted (ax.plot(...)) and add the argument : c=COLOR[team] where team is the team's shortName
-COLOR = {
-    "GSHC": "#6E0B14",
-    "HCD": "#FFDD00",
-    "HCA": "#FFCC00",
-    "HCAP": "#202c59",
-    "SCB": "#e30613",
-    "EHCB": "#d11216",
-    "FRI": "#121516",
-    "EHCK": "#324b9b",
-    "SCL": "#e30613",
-    "LHC": "#e40f29",
-    "HCL": "#000000",
-    "SCRJ": "#03326d",
-    "EVZ": "#0f6ca9",
-    "ZSC": "#0092cc"
-}
-
-LINESTYLE = {
-    "GSHC": "dashed",
-    "HCD": "dotted",
-    "HCA": "dashed",
-    "HCAP": "dashdot",
-    "SCB": "dotted",
-    "EHCB": "dashed",
-    "FRI": "dashed",
-    "EHCK": "dotted",
-    "SCL": "dotted",
-    "LHC": "dashed",
-    "HCL": "dashdot",
-    "SCRJ": "dotted",
-    "EVZ": "dotted",
-    "ZSC": "dotted"
-}
-
 fig, ax = plt.subplots(figsize=(2560/96, 1335/96)) # 2K resolution with a dpi of 96
 
 teams_json = requests.get(URL_TEAMS).json()
